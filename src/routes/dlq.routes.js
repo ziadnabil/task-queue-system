@@ -1,23 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const queueService = require('../services/queue.service');
 
-/**
- * GET /dlq
- * Returns the dead-letter queue contents
- */
-router.get('/', (req, res) => {
-  const dlq = queueService.getDLQ();
-  return res.status(200).json(dlq);
-});
+// Import the DLQ controller
+const dlqController = require('../controllers/dlq.controller');
 
-/**
- * DELETE /dlq
- * Clears the dead-letter queue
- */
-router.delete('/', (req, res) => {
-  queueService.clearDLQ();
-  return res.status(200).json({ status: 'DLQ cleared' });
-});
+// GET /dlq
+router.get('/', dlqController.getDLQ);
+
+// DELETE /dlq
+router.delete('/', dlqController.clearDLQ);
 
 module.exports = router;
